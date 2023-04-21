@@ -14,10 +14,22 @@ function Homepage() {
         borderRadius="1g"
         borderWidht="1px"
       >
-        <Text fontSize={"4xl"} fontFamily={"work sans"} color={"black"}>
+        <Text
+          fontSize={"4xl"}
+          fontFamily={"work sans"}
+          color={"black"}
+          textAlign={"center"}
+        >
           Talk-A-Tive
         </Text>
       </Box>
+      <Box
+        bg="white"
+        w="100%"
+        p={4}
+        borderRadius={"1g"}
+        borderWidth={"1px"}
+      ></Box>
     </Container>
   );
 }
