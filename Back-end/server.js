@@ -14,8 +14,6 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("APP IS RUNNING");
 });
-app.use(notFound);
-app.use(errorHandler);
 
 app.use("/api/user", userRoutes);
 
@@ -27,6 +25,8 @@ app.use("/api/user", userRoutes);
 //   const singleChat = chats.find((c) => c._id == req.params.id);
 //   res.send(singleChat);
 // });
+app.use(notFound);
+app.use(errorHandler);
 
 PORT = process.env.PORT || 7000;
 app.listen(
