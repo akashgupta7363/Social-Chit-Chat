@@ -15,7 +15,7 @@ function Homepage() {
         w="100%"
         m="40px 0px 15px 0px"
         borderRadius="8px"
-        borderWidht="1px"
+        borderWidth="1px"
       >
         <Text
           fontSize={"4xl"}
