@@ -16,6 +16,8 @@ import {
   Text,
   Tooltip,
   useDisclosure,
+  Input,
+  useToast,
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
@@ -29,7 +31,20 @@ function SideDrawer() {
   const [loadingChats, setLoadingChats] = useState("");
   const { user } = ChatState();
   const history = useHistory();
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleSearch = () => {
+    if (!search) {
+      toast({
+        title: "Pleases enter something in search bar",
+
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+        position: "top-left",
+      });
+    }
+  };
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -87,11 +102,23 @@ function SideDrawer() {
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottom={"1px"}>Search Users</DrawerHeader>
+          <DrawerHeader borderBottomWidth={"1px"}>Search Users</DrawerHeader>
+          <Box
+            display={"flex"}
+            marginTop={2}
+            marginLeft={2}
+            paddingBottom={"2"}
+          >
+            <Input
+              placeholder="Search by name or email"
+              mr={2}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            ></Input>
+            <Button onClick={handleSearch}>Go</Button>
+          </Box>
         </DrawerContent>
-        <DrawerBody>
-          <Box></Box>
-        </DrawerBody>
+        <DrawerBody></DrawerBody>
       </Drawer>
     </div>
   );
