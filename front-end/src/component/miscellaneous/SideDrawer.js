@@ -3,6 +3,11 @@ import {
   Avatar,
   Box,
   Button,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerContent,
+  DrawerOverlay,
   Menu,
   MenuButton,
   MenuDivider,
@@ -10,10 +15,12 @@ import {
   MenuList,
   Text,
   Tooltip,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
@@ -21,6 +28,13 @@ function SideDrawer() {
   const [loading, setLoading] = useState(false);
   const [loadingChats, setLoadingChats] = useState("");
   const { user } = ChatState();
+  const history = useHistory();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    history.push("/");
+  };
 
   return (
     <div>
@@ -34,7 +48,7 @@ function SideDrawer() {
         borderWidth={"5px"}
       >
         <Tooltip label="Search users to chat" hasArrow placement="bottom-end">
-          <Button variant={"ghost"}>
+          <Button variant={"ghost"} onClick={onOpen}>
             <i class="fas fa-search"></i>
             <Text display={{ base: "none", md: "flex" }} px={"4"}>
               Search user
@@ -65,11 +79,20 @@ function SideDrawer() {
                 <MenuItem>My Profile</MenuItem>
               </ProfileModal>
               <MenuDivider />
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={logoutHandler}>Logout</MenuItem>
             </MenuList>
           </Menu>
         </div>
       </Box>
+      <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottom={"1px"}>Search Users</DrawerHeader>
+        </DrawerContent>
+        <DrawerBody>
+          <Box></Box>
+        </DrawerBody>
+      </Drawer>
     </div>
   );
 }
