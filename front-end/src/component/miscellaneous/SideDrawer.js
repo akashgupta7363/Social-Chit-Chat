@@ -18,6 +18,7 @@ import {
   useDisclosure,
   Input,
   useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
@@ -38,7 +39,7 @@ function SideDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const accessChat = async (userId) => {
     try {
-      setLoadingChat(true);
+      setLoadingChats(true);
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -53,9 +54,9 @@ function SideDrawer() {
     } catch (err) {
       toast({
         title: "Error fetching chats",
-        description: error.message,
+        description: err.message,
         status: "error",
-        duration: 4000,
+        duration: 5000,
         isClosable: true,
         position: "bottom-left",
       });
@@ -67,7 +68,7 @@ function SideDrawer() {
         title: "Pleases enter something in search bar",
 
         status: "warning",
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
         position: "top-left",
       });
@@ -90,7 +91,7 @@ function SideDrawer() {
         title: "Error Occured",
         description: "Failed to load the Search Results",
         status: "error",
-        duration: 4000,
+        duration: 5000,
         isClosable: true,
         position: "bottom-left",
       });
@@ -154,34 +155,36 @@ function SideDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerHeader borderBottomWidth={"1px"}>Search Users</DrawerHeader>
-          <Box
-            display={"flex"}
-            marginTop={2}
-            marginLeft={2}
-            paddingBottom={"2"}
-            paddingRight={"2"}
-          >
-            <Input
-              placeholder="Search by name or email"
-              mr={2}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            ></Input>
-            <Button onClick={handleSearch}>Go</Button>
-          </Box>
-          {loading ? (
-            <ChatLoading />
-          ) : (
-            searchResult?.map((user) => (
-              <UserListItem
-                key={user._id}
-                user={user}
-                handleFunction={() => accessChat(user._id)}
-              />
-            ))
-          )}
+          <DrawerBody>
+            <Box
+              display={"flex"}
+              marginTop={2}
+              marginLeft={2}
+              paddingBottom={"2"}
+              paddingRight={"2"}
+            >
+              <Input
+                placeholder="Search by name or email"
+                mr={2}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              ></Input>
+              <Button onClick={handleSearch}>Go</Button>
+            </Box>
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              searchResult?.map((user) => (
+                <UserListItem
+                  key={user._id}
+                  user={user}
+                  handleFunction={() => accessChat(user._id)}
+                />
+              ))
+            )}
+            {loadingChats && <Spinner ml="auto" display={"flex"}></Spinner>}
+          </DrawerBody>
         </DrawerContent>
-        <DrawerBody></DrawerBody>
       </Drawer>
     </div>
   );
