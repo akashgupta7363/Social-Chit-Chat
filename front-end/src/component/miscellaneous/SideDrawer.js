@@ -25,13 +25,14 @@ import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import ChatLoading from "./ChatLoading";
 import axios from "axios";
+import UserListItem from "../userAvtar/UserListItem";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const { user } = ChatState();
   const [loading, setLoading] = useState(false);
   const [loadingChats, setLoadingChats] = useState("");
-  c;
   const history = useHistory();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -134,6 +135,7 @@ function SideDrawer() {
             marginTop={2}
             marginLeft={2}
             paddingBottom={"2"}
+            paddingRight={"2"}
           >
             <Input
               placeholder="Search by name or email"
