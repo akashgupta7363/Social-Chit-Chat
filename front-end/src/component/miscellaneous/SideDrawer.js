@@ -23,17 +23,20 @@ import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import ChatLoading from "./ChatLoading";
+import axios from "axios";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChats, setLoadingChats] = useState("");
-  const { user } = ChatState();
+  c;
   const history = useHistory();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const handleSearch = () => {
+  const accessChat = (userId) => {};
+  const handleSearch = async () => {
     if (!search) {
       toast({
         title: "Pleases enter something in search bar",
@@ -42,6 +45,29 @@ function SideDrawer() {
         duration: 3000,
         isClosable: true,
         position: "top-left",
+      });
+
+      return;
+    }
+    try {
+      setLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(`/api/user?search=${search}`, config);
+
+      setLoading(false);
+      setSearchResult(data);
+    } catch (err) {
+      toast({
+        title: "Error Occured",
+        description: "Failed to load the Search Results",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom-left",
       });
     }
   };
@@ -117,6 +143,17 @@ function SideDrawer() {
             ></Input>
             <Button onClick={handleSearch}>Go</Button>
           </Box>
+          {loading ? (
+            <ChatLoading />
+          ) : (
+            searchResult?.map((user) => (
+              <UserListItem
+                key={user._id}
+                user={user}
+                handleFunction={() => accessChat(user._id)}
+              />
+            ))
+          )}
         </DrawerContent>
         <DrawerBody></DrawerBody>
       </Drawer>
