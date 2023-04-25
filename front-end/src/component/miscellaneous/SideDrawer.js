@@ -30,13 +30,37 @@ import UserListItem from "../userAvtar/UserListItem";
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const { user } = ChatState();
+  const { user, setSelectedChats, chats, setChats } = ChatState();
   const [loading, setLoading] = useState(false);
   const [loadingChats, setLoadingChats] = useState("");
   const history = useHistory();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const accessChat = (userId) => {};
+  const accessChat = async (userId) => {
+    try {
+      setLoadingChat(true);
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.post(`/api/chat`, { userId }, config);
+
+      setSelectedChats(data);
+      setLoadingChats(false);
+      onClose();
+    } catch (err) {
+      toast({
+        title: "Error fetching chats",
+        description: error.message,
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
   const handleSearch = async () => {
     if (!search) {
       toast({
