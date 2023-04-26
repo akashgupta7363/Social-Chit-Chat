@@ -10,11 +10,11 @@ import {
 import React, { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 
 function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -55,7 +55,7 @@ function Login() {
       });
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      history.push("/chats");
+      history.push("/chat");
     } catch (error) {
       toast({
         title: "Error Occured  somewhere",
@@ -123,4 +123,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default withRouter(Login);

@@ -1,29 +1,46 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
+  const [selectedChat, setSelectedChat] = useState();
   const [user, setUser] = useState();
-  const [selectedChat, setSelectedChats] = useState();
-  const [chats, setChats] = useState();
+  const [notification, setNotification] = useState([]);
+  const [chats, setChats] = useState([]);
+
   const history = useHistory();
+
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    // if (!userInfo) {
+    //   history.push("/");
+    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
     setUser(userInfo);
-    if (!userInfo) {
-      history.push("/");
-    }
   }, [history]);
 
   return (
     <ChatContext.Provider
-      value={{ user, setUser, selectedChat, setSelectedChats, chats, setChats }}
+      value={{
+        selectedChat,
+        setSelectedChat,
+        user,
+        setUser,
+        notification,
+        setNotification,
+        chats,
+        setChats,
+      }}
     >
       {children}
     </ChatContext.Provider>
   );
 };
+
 export const ChatState = () => {
   return useContext(ChatContext);
 };

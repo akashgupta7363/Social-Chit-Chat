@@ -4,29 +4,28 @@ import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
+import { getSender } from "../../config/ChatLogics";
 
 function MyChats() {
-  const { user, setSelectedChats, chats, setChats, selectedChats } =
-    ChatState();
-  const [loggedUser, setLoggedUser] = useState();
+  const { user, setSelectedChat, chats, setChats, selectedChat } = ChatState();
+  const [loggedUser, setLoggedUser] = useState([]);
   const toast = useToast();
- 
+
   const fetchChats = async () => {
+    // console.log(user._id);
     try {
       const config = {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/chat`, config);
-      console.log(data);
-      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
 
+      const { data } = await axios.get("/api/chat", config);
       setChats(data);
-    } catch (err) {
+    } catch (error) {
       toast({
-        title: "Error Occured now",
-        description: err.message,
+        title: "oo Error Occured! ",
+        description: "Failed to Load the chats",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -40,7 +39,7 @@ function MyChats() {
   }, []);
   return (
     <Box
-      d={{ base: selectedChats ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
@@ -59,7 +58,7 @@ function MyChats() {
         justifyContent="space-between"
         alignItems="center"
       >
-        MyChats
+        My Chats
         <Button
           display={"flex"}
           fontSize={{ base: "17px", md: "10px", lg: "17px" }}
@@ -69,36 +68,43 @@ function MyChats() {
         </Button>
       </Box>
       <Box
-      display={"flex"}
-      flexDir={"column"}
-      p={3}
-      bg="#F8F8F8"
-      w="100%"
-      h="100%"
-      borderRadius={"lg"}
-      overflow={"hidden"}>
-        {chats?(
-          <Stack overflowY={'scroll'}>
-            {chats.map((chat))=>(<Box onClick={setSelectedChats(chat)}
-            cursor="pointer"
-
-            bg={selectedChats===chat?"#38B2AC":"#E8E8E8"}
-            color={selectedChats===chat?"white":"black"}
-            px={"3"}
-            py="2"
-            borderRadius={"lg"}
-            key={chat._id}>
-              <Text
+        display={"flex"}
+        flexDir={"column"}
+        p={3}
+        bg="#F8F8F8"
+        w="100%"
+        h="100%"
+        borderRadius={"lg"}
+        overflow={"hidden"}
+      >
+        {chats ? (
+          <Stack overflowY={"scroll"}>
+            {chats.map((chat) => (
+              <Box
+                onClick={() => setSelectedChat(chat)}
+                cursor="pointer"
+                backgroundColor={selectedChat === chat ? "#38B2AC" : "#E8E8E8"}
+                color={selectedChat === chat ? "white" : "black"}
+                paddingX={"3"}
+                py="2"
+                borderRadius={"lg"}
+                key={chat._id}
+                _hover={{
+                  background: "#38B2AC",
+                  color: "white",
+                }}
               >
-                {!chat.isGroupChat?(getSender(loggedUser,chat.users)):(chat.chatName)}
-              </Text>
-            </Box>)}
-
+                <Text>
+                  {!chat.isGroupChat
+                    ? getSender(loggedUser, chat.users)
+                    : chat.chatName}
+                </Text>
+              </Box>
+            ))}
           </Stack>
-          ):(<ChatLoading/>
-
+        ) : (
+          <ChatLoading />
         )}
-
       </Box>
     </Box>
   );

@@ -3,7 +3,10 @@ import { Container, Box, Text } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import SignUp from "../component/Authentication/SignUp";
 import Login from "../component/Authentication/Login";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useHistory,
+  withRouter,
+} from "react-router-dom/cjs/react-router-dom.min";
 
 function Homepage() {
   const history = useHistory();
@@ -56,4 +59,4 @@ function Homepage() {
   );
 }
 
-export default Homepage;
+export default withRouter(Homepage);

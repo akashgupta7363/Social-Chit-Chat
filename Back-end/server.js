@@ -30,7 +30,7 @@ app.use("/api/chat", chatRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-PORT = process.env.PORT || 7000;
+PORT = process.env.PORT || 8000;
 app.listen(
   PORT,
   console.log(`Server is listenning on port ${PORT}`.yellow.bold)

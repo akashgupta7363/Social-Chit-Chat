@@ -23,7 +23,10 @@ import {
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useHistory,
+  withRouter,
+} from "react-router-dom/cjs/react-router-dom.min";
 import ChatLoading from "./ChatLoading";
 import axios from "axios";
 import UserListItem from "../userAvtar/UserListItem";
@@ -31,9 +34,9 @@ import UserListItem from "../userAvtar/UserListItem";
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const { user, setSelectedChats, chats, setChats } = ChatState();
+  const { user, setSelectedChat, chats, setChats } = ChatState();
   const [loading, setLoading] = useState(false);
-  const [loadingChats, setLoadingChats] = useState("");
+  const [loadingChats, setLoadingChats] = useState(false);
   const history = useHistory();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,8 +50,11 @@ function SideDrawer() {
         },
       };
       const { data } = await axios.post(`/api/chat`, { userId }, config);
+      if (!chats.find((c) => c._id === data._id)) {
+        setChats([data, ...chats]);
+      }
 
-      setSelectedChats(data);
+      setSelectedChat(data);
       setLoadingChats(false);
       onClose();
     } catch (err) {
@@ -116,7 +122,7 @@ function SideDrawer() {
       >
         <Tooltip label="Search users to chat" hasArrow placement="bottom-end">
           <Button variant={"ghost"} onClick={onOpen}>
-            <i class="fas fa-search"></i>
+            <i className="fas fa-search"></i>
             <Text display={{ base: "none", md: "flex" }} px={"4"}>
               Search user
             </Text>
@@ -190,4 +196,4 @@ function SideDrawer() {
   );
 }
 
-export default SideDrawer;
+export default withRouter(SideDrawer);
