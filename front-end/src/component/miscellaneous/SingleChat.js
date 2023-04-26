@@ -36,6 +36,17 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
               <> {selectedChat.chatName.toUpperCase()}</>
             )}
           </Text>
+          <Box
+            display="flex"
+            flexDir="column"
+            justifyContent="flex-end"
+            p={3}
+            bg="#E8E8E8"
+            w="100%"
+            h="100%"
+            borderRadius="lg"
+            overflowY="hidden"
+          ></Box>
         </>
       ) : (
         <Box
