@@ -50,11 +50,11 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
       );
       setRenameLoading(false);
       setSelectedChat(data);
-      // setFetchagain(!fetchagain);
+      setFetchagain(!fetchagain);
     } catch (error) {
       toast({
         title: "Error Occured!",
-        description: "err",
+        description: error.response.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -66,10 +66,22 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
   };
 
   const handleRemove = async (user1) => {
+    if (selectedChat === "") {
+      toast({
+        title: "Please select chat",
+        description: "err",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+
     if (selectedChat.groupAdmin._id !== user.id) {
       toast({
         title: "only admin can remove someone",
-        description: "error",
+        description: "err",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -94,7 +106,7 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
       );
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setLoading(false);
-      // setFetchagain(!fetchagain);
+      setFetchagain(!fetchagain);
     } catch (error) {
       toast({
         title: "Error Occured! ",
@@ -108,10 +120,21 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
     }
   };
   const handleAddUser = async (user1) => {
+    if (selectedChat === "") {
+      toast({
+        title: "Please select chat first",
+        description: "err",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
     if (selectedChat.groupAdmin._id !== user.id) {
       toast({
         title: "only admin can add someone",
-        description: "error",
+        description: "err",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -150,7 +173,7 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
 
       setSelectedChat(data);
       setLoading(false);
-      // setFetchagain(!fetchagain);
+      setFetchagain(!fetchagain);
     } catch (error) {
       toast({
         title: "Error Occured! ",
