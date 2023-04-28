@@ -6,7 +6,7 @@ import ChatBox from "../component/miscellaneous/ChatBox";
 import { useState } from "react";
 function Chatpage() {
   const { user } = ChatState();
-  const [fetchagain, setFetchagain] = useState(false);
+  const [fetchagain, setFetchagain] = useState(true);
 
   return (
     <div style={{ width: "100%" }}>
