@@ -18,6 +18,7 @@ import {
 import React, { useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../userAvtar/UserBadgeItem";
+import axios from "axios";
 
 function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,9 +27,41 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const { selectedChat, setSelectedChat, user } = ChatState();
-  const [renameLoading, setRenameLoading] = useState();
+  const [renameLoading, setRenameLoading] = useState(false);
   const toast = useToast();
-  const handleRename = () => {};
+  const handleRename = async () => {
+    if (!groupChatName) return;
+    try {
+      setRenameLoading(true);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.put(
+        "/api/chat/rename",
+        {
+          chatId: selectedChat._id,
+          chatName: groupChatName,
+        },
+        config
+      );
+      setSelectedChat(data);
+      setRenameLoading(false);
+      setFetchagain(!fetchagain);
+    } catch (error) {
+      toast({
+        title: "Error Occured!",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      setRenameLoading(false);
+    }
+    setGroupChatName("");
+  };
   const handleRemove = () => {};
   const handleSearch = () => {};
   return (
