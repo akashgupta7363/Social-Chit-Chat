@@ -1,7 +1,10 @@
 import { ViewIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  FormControl,
   IconButton,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
+import UserBadgeItem from "../userAvtar/UserBadgeItem";
 
 function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,6 +28,9 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
   const { selectedChat, setSelectedChat, user } = ChatState();
   const [renameLoading, setRenameLoading] = useState();
   const toast = useToast();
+  const handleRename = () => {};
+  const handleRemove = () => {};
+  const handleSearch = () => {};
   return (
     <>
       <IconButton
@@ -34,15 +41,56 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{selectedChat.chatName}</ModalHeader>
+          <ModalHeader
+            fontSize={"35px"}
+            fontFamily={"Work sans"}
+            display={"flex"}
+            justifyContent={"center"}
+          >
+            {selectedChat.chatName}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody></ModalBody>
+          <ModalBody>
+            <Box w="100%" display={"flex"} flexWrap={"wrap"} pb={3}>
+              {selectedChat.users.map((u) => (
+                <UserBadgeItem
+                  key={u._id}
+                  user={u}
+                  handleFunction={() => handleRemove(u)}
+                />
+              ))}
+            </Box>
+            <FormControl display={"flex"}>
+              <Input
+                placeholder="Chat Name"
+                mb={3}
+                marginRight={2}
+                value={groupChatName}
+                onChange={(e) => setGroupChatName(e.target.value)}
+              />
+              <Button
+                variant={"solid"}
+                colorScheme="teal"
+                m1={1}
+                isLoading={renameLoading}
+                onClick={handleRename}
+              >
+                Update
+              </Button>
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="Add Users eg: John, Piyush, Jane"
+                mb={1}
+                onChange={(e) => handleSearch(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
+            <Button onClick={() => handleRemove(user)} colorScheme="red">
+              Leave Group
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
