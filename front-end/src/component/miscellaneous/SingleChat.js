@@ -48,6 +48,7 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
         );
         console.log(data);
         setNewMessage("");
+        socket.emit("new message", data);
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -99,7 +100,23 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
   };
   useEffect(() => {
     fetchMessages();
+
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        //Give Notification
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
   };
