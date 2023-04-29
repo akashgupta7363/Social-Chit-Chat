@@ -17,10 +17,16 @@ import { Connection } from "mongoose";
 import axios from "axios";
 import "./style.css";
 import ScrollableChat from "./ScrollableChat";
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:8000";
+var socket, selectedChatCompare;
+
 const SingleChat = ({ fetchagain, setFetchagain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
+  const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
   const { user, selectedChat, setSelectedChat } = ChatState();
   const sendMessage = async (event) => {
@@ -55,6 +61,13 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
       }
     }
   };
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => {
+      setSocketConnected(true);
+    });
+  }, []);
   const fetchMessages = async () => {
     if (!selectedChat) return;
     try {
@@ -68,9 +81,11 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
         `/api/message/${selectedChat._id}`,
         config
       );
-      console.log(data);
+      // console.log(data);
       setMessages(data);
       setLoading(false);
+
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Error Occured!",
