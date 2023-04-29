@@ -22,7 +22,7 @@ import UserBadgeItem from "../userAvtar/UserBadgeItem";
 import axios from "axios";
 import UserListItem from "../userAvtar/UserListItem";
 
-function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
+function UpdateGroupChatModal({ fetchagain, setFetchagain, fetchMessages }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
@@ -105,6 +105,7 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain }) {
         config
       );
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
+      fetchMessages();
       setLoading(false);
       setFetchagain(!fetchagain);
     } catch (error) {
