@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
+import { Effect } from "react-notification-badge";
 import ProfileModal from "./ProfileModal";
 import {
   useHistory,
@@ -31,6 +32,7 @@ import ChatLoading from "./ChatLoading";
 import axios from "axios";
 import UserListItem from "../userAvtar/UserListItem";
 import { getSender } from "../../config/ChatLogics";
+import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
@@ -142,12 +144,22 @@ function SideDrawer() {
         <div>
           <Menu>
             <MenuButton p={1}>
+              <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
               <BellIcon fontSize="2xl " m={1} />
             </MenuButton>
             <MenuList pl={2}>
               {!notification.length && "No new notification"}
               {notification.map((notif) => (
-                <MenuItem key={notif._id}>
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
                   {notif.chat.isGroupChat
                     ? `New message in ${notif.chat.chatName}`
                     : `New message from ${getSender(user, notif.chat.users)}`}
