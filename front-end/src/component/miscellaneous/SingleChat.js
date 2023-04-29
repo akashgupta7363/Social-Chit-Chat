@@ -29,6 +29,13 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
   const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
   const { user, selectedChat, setSelectedChat } = ChatState();
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => {
+      setSocketConnected(true);
+    });
+  }, []);
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       try {
@@ -62,13 +69,7 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
       }
     }
   };
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connection", () => {
-      setSocketConnected(true);
-    });
-  }, []);
+
   const fetchMessages = async () => {
     if (!selectedChat) return;
     try {
