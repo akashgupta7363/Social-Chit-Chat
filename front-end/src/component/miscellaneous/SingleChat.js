@@ -30,7 +30,8 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
   const [newMessage, setNewMessage] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  const { user, selectedChat, setSelectedChat, notification, setNotification } =
+    ChatState();
   const [typing, setTyping] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -71,7 +72,7 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
           },
           config
         );
-        console.log(data);
+        // console.log(data);
         setNewMessage("");
         socket.emit("new message", data);
         setMessages([...messages, data]);
@@ -130,6 +131,11 @@ const SingleChat = ({ fetchagain, setFetchagain }) => {
         selectedChatCompare._id !== newMessageRecieved.chat._id
       ) {
         //Give Notification
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          console.log(notification, "--------------");
+          setFetchagain(!fetchagain);
+        }
       } else {
         setMessages([...messages, newMessageRecieved]);
       }

@@ -30,11 +30,19 @@ import {
 import ChatLoading from "./ChatLoading";
 import axios from "axios";
 import UserListItem from "../userAvtar/UserListItem";
+import { getSender } from "../../config/ChatLogics";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   const [loading, setLoading] = useState(false);
   const [loadingChats, setLoadingChats] = useState(false);
   const history = useHistory();
@@ -136,7 +144,16 @@ function SideDrawer() {
             <MenuButton p={1}>
               <BellIcon fontSize="2xl " m={1} />
             </MenuButton>
-            <MenuList></MenuList>
+            <MenuList pl={2}>
+              {!notification.length && "No new notification"}
+              {notification.map((notif) => (
+                <MenuItem key={notif._id}>
+                  {notif.chat.isGroupChat
+                    ? `New message in ${notif.chat.chatName}`
+                    : `New message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
