@@ -81,9 +81,9 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain, fetchMessages }) {
     if (selectedChat.groupAdmin._id !== user.id) {
       toast({
         title: "only admin can remove someone",
-        description: "err",
+        description: "Or please select the chat first",
         status: "error",
-        duration: 5000,
+        duration: 6000,
         isClosable: true,
         position: "bottom",
       });
@@ -135,9 +135,9 @@ function UpdateGroupChatModal({ fetchagain, setFetchagain, fetchMessages }) {
     if (selectedChat.groupAdmin._id !== user.id) {
       toast({
         title: "only admin can add someone",
-        description: "err",
+        description: "please select the chat first",
         status: "error",
-        duration: 5000,
+        duration: 6000,
         isClosable: true,
         position: "bottom",
       });

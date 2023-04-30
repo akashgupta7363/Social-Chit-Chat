@@ -139,7 +139,7 @@ function SignUp() {
           <InputGroup>
             <Input
               type={show ? "text" : "password"}
-              placeholder="Enter Your Email"
+              placeholder="Enter Your password"
               onChange={(e) => setPassword(e.target.value)}
             ></Input>
             <InputRightElement width={"4rem"}>
@@ -154,7 +154,7 @@ function SignUp() {
           <InputGroup>
             <Input
               type={show ? "text" : "password"}
-              placeholder="Enter Your Email"
+              placeholder="confirm the password"
               onChange={(e) => setConfirmPassword(e.target.value)}
             ></Input>
             <InputRightElement width={"4rem"}>
