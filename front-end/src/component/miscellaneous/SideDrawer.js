@@ -20,7 +20,7 @@ import {
   useToast,
   Spinner,
 } from "@chakra-ui/react";
-import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { BellIcon, ChatIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from "../../Context/ChatProvider";
 import { Effect } from "react-notification-badge";
 import ProfileModal from "./ProfileModal";
@@ -139,7 +139,7 @@ function SideDrawer() {
           </Button>
         </Tooltip>
         <Text fontSize={"2xl"} fontFamily={"Work sans"}>
-          Chatty
+          <ChatIcon /> Social-Chit-Chat
         </Text>
         <div>
           <Menu>

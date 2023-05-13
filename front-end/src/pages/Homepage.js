@@ -7,6 +7,7 @@ import {
   useHistory,
   withRouter,
 } from "react-router-dom/cjs/react-router-dom.min";
+import { ChatIcon } from "@chakra-ui/icons";
 
 function Homepage() {
   const history = useHistory();
@@ -14,7 +15,7 @@ function Homepage() {
     const user = JSON.parse(localStorage.getItem("userInfo"));
 
     if (user) {
-      history.push("/chat");
+      history.push("/chats");
     }
   }, [history]);
 
@@ -36,7 +37,7 @@ function Homepage() {
           color={"black"}
           textAlign={"center"}
         >
-          Talk-A-Tive
+          <ChatIcon /> Social-Chit-Chat
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius={"5px"} borderWidth={"1px"}>

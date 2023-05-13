@@ -24,14 +24,14 @@ function MyChats(fetchagain) {
       const { data } = await axios.get("/api/chat", config);
       setChats(data);
     } catch (error) {
-      toast({
-        title: "oo Error Occured! ",
-        description: "Failed to Load the chats",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom-left",
-      });
+      // toast({
+      //   title: "Error Occured! ",
+      //   description: "Failed to Load the chats refresh",
+      //   status: "error",
+      //   duration: 1000,
+      //   isClosable: true,
+      //   position: "bottom-left",
+      // });
     }
   };
   useEffect(() => {
