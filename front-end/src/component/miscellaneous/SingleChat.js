@@ -21,7 +21,7 @@ import io from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../../animation/10357-chat-typing-indicator.json";
 
-const ENDPOINT = "http://localhost:8000";
+const ENDPOINT = "https://socialchitchat.onrender.com/";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchagain, setFetchagain }) => {
