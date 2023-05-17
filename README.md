@@ -1,4 +1,4 @@
-# Web-Chat-App
+# Social-Chit-Chat
 This project is a real time chat web app made with MERN stack and socket.io
 
 
